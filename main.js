@@ -36,6 +36,16 @@ res.json(articles);
 
 });
 
+app.get(`/articles/search_2`,(req,res)=>{
+
+    res.status(200);
+    const articleId = req.query.id;
+    res.json(articles[articleId-1]);
+
+ });
+
+
+
 
 app.listen(PORT,()=>{
 
