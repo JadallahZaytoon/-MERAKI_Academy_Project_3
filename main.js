@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
 const PORT=5000;
-
+const { v4: uuidv4 } = require('uuid');
+app.use(express.json());
 
 const articles = [
     {
@@ -44,6 +45,14 @@ app.get(`/articles/search_2`,(req,res)=>{
 
  });
 
+ app.post("/articles",(req,res)=>{
+   
+    
+   const newArticel ={id:uuidv4(),title:req.body.title,description:req.body.description,author:req.body.author};
+    articles.push(newArticel);
+    res.status(201);
+    res.json(newArticel);
+ });
 
 
 
@@ -51,3 +60,9 @@ app.listen(PORT,()=>{
 
 console.log(`Server works at port ${PORT}`);
 });
+
+// {
+//     "title": "server",
+//     "description":"lorem, quam, mozzza",
+//     "author":"Jadallah"
+// }
