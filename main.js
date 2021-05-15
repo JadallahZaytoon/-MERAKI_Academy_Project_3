@@ -33,7 +33,7 @@ app.get("/articles", (req, res) => {
 app.get(`/articles/search_2`, (req, res) => {
   const articleId = req.query.id;
 
-  const found = articles.filter((element) => {
+  const found = articles.find((element) => {
     return element.id == articleId;
   });
 
@@ -60,26 +60,24 @@ app.post("/articles", (req, res) => {
 
 
 app.put("/articles/:id",(req,res)=>{
-
 const userId = req.params.id
-res.status(200);
-res.json(articles);
-
 let i;
-const found = articles.filter((element,index)=>{
+const found = articles.find((element,index)=>{
 
     i=index;
     return element.id== userId;
 
-    if(found){
-        articles[i]=req.body.id
-        res.status(200);
-        res.json(articles[i]);
-    }else{
-        res.status(404);
-        res.json("User not found");
-    }
+    
 });
+
+if(found){
+    articles[i]=req.body.id
+    res.status(200);
+    res.json(articles[i]);
+}else{
+    res.status(404);
+    res.json("User not found");
+}
 
 });
 
@@ -88,8 +86,8 @@ app.delete("/articles/:id",(req,res)=>{
     const delById=req.params.id;
     
     let i;
-const found = articles.filter((element,index)=>{
-
+const found = articles.find((element,index)=>{
+    i=index;
 return element.id == delById ;
 });
 
