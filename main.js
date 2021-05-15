@@ -83,6 +83,27 @@ const found = articles.filter((element,index)=>{
 
 });
 
+app.delete("/articles/:id",(req,res)=>{
+
+    const delById=req.params.id;
+    
+    let i;
+const found = articles.filter((element,index)=>{
+
+return element.id == delById ;
+});
+
+if(found){
+  
+  console.log(found);
+    articles.splice(i,1);
+    res.json({
+        "success": true,
+        "message":`Success Delete article with id` 
+    });
+}
+});
+
 
 app.listen(PORT, () => {
   console.log(`Server works at port ${PORT}`);
