@@ -58,12 +58,34 @@ app.post("/articles", (req, res) => {
   res.json(newArticel);
 });
 
+
+app.put("/articles/:id",(req,res)=>{
+
+const userId = req.params.id
+res.status(200);
+res.json(articles);
+
+let i;
+const found = articles.filter((element,index)=>{
+
+    i=index;
+    return element.id== userId;
+
+    if(found){
+        articles[i]=req.body.id
+        res.status(200);
+        res.json(articles[i]);
+    }else{
+        res.status(404);
+        res.json("User not found");
+    }
+});
+
+});
+
+
 app.listen(PORT, () => {
   console.log(`Server works at port ${PORT}`);
 });
 
-// {
-//     "title": "server",
-//     "description":"lorem, quam, mozzza",
-//     "author":"Jadallah"
-// }
+
