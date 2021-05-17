@@ -2,8 +2,8 @@ const express = require("express");
 const app = express();
 const PORT = 5000;
 // const { v4: uuidv4 } = require("uuid");
-const db =require("./project_3_v01");
-const {user1,articles1}= require("./schema");
+const db = require("./project_3_v01");
+const { user1, articles1 } = require("./schema");
 app.use(express.json());
 
 let articles = [
@@ -27,53 +27,61 @@ let articles = [
   },
 ];
 
-
-
 app.get("/users", (req, res) => {
   res.status(200);
 
-  user1.find({},"firstName lastName country")
-  .then((result)=>{
-    res.status(200);
-    res.json(result);
-  })
-  .catch((err)=>{
-    res.json(err);
-  })
+  user1
+    .find({}, "firstName lastName country")
+    .then((result) => {
+      res.status(200);
+      res.json(result);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
 });
-
 
 app.get("/articles", (req, res) => {
   res.status(200);
 
-  articles1.find({})
-  .then((result)=>{
-    res.status(200);
-    res.json(result);
-  })
-  .catch((err)=>{
-    res.json(err);
-  })
+  articles1
+    .find({})
+    .then((result) => {
+      res.status(200);
+      res.json(result);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
 });
 
-app.get("/article",(req,res)=>{
+app.get("/article", (req, res) => {
   const articleId = req.query.id;
-  articles1.findOne({_id:articleId})
-  .then((result)=>{
-    res.json(result);
-  })
-  .catch((err)=>{
-    res.json(err);
-  })
-})
+  articles1
+    .findOne({ _id: articleId })
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
 
-
-
-
+app.get("/article/authorid", (req, res) => {
+  const authorId = req.query.author;
+  articles1
+    .find({ author: authorId })
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
 
 // app.get(`/articles/id`, (req, res) => {
 
-//   const 
+//   const
 
 //   const articleId = req.query.id;
 
@@ -90,53 +98,41 @@ app.get("/article",(req,res)=>{
 //   }
 // });
 
-app.post("/users",(req,res)=>{
+app.post("/users", (req, res) => {
+  const { firstName, lastName, age, country, email, password } = req.body;
 
-  const {firstName, 
-  lastName, 
-  age,
-  country, 
-  email, 
-  password } =req.body;
-
-  const newUser = new user1(
-    {firstName, 
-    lastName, 
+  const newUser = new user1({
+    firstName,
+    lastName,
     age,
-    country, 
-    email, 
-    password });
+    country,
+    email,
+    password,
+  });
 
-    newUser
+  newUser
     .save()
-    .then((result)=>{
+    .then((result) => {
       res.json(result);
     })
-    .catch((err)=>{
+    .catch((err) => {
       res.json(err);
-    })
+    });
 });
 
-app.post("/articles",(req,res)=>{
+app.post("/articles", (req, res) => {
+  const { title, description, author } = req.body;
 
-  const{  title,
-  description,
-  author
-} = req.body;
-
-const newArticle = new articles1(
-  {title,
-  description,
-  author});
+  const newArticle = new articles1({ title, description, author });
 
   newArticle
-  .save()
-  .then((result)=>{
-    res.json(result);
-  })
-  .catch((err)=>{
-    res.json(err);
-  })
+    .save()
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
 });
 
 app.put("/articles/:id", (req, res) => {
