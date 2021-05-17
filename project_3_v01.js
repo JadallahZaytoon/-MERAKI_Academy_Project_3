@@ -14,4 +14,4 @@ const options = {
  .then(
     ()=>{console.log("Db connected");},
     (err)=>{console.log(err);}
-)
+);

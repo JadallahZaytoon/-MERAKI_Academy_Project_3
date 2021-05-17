@@ -29,26 +29,34 @@ let articles = [
 
 
 
-app.get("/articles", (req, res) => {
+app.get("/users", (req, res) => {
   res.status(200);
-  res.json(articles);
-});
 
-app.get(`/articles/search_2`, (req, res) => {
-  const articleId = req.query.id;
-
-  const found = articles.find((element) => {
-    return element.id == articleId;
-  });
-
-  if (found) {
+  user1.find({},"firstName lastName country")
+  .then((result)=>{
     res.status(200);
-    res.json(found);
-  } else {
-    res.status(404);
-    res.json("User not found");
-  }
+    res.json(result);
+  })
 });
+
+// app.get(`/articles/id`, (req, res) => {
+
+//   const 
+
+//   const articleId = req.query.id;
+
+//   const found = articles.find((element) => {
+//     return element.id == articleId;
+//   });
+
+//   if (found) {
+//     res.status(200);
+//     res.json(found);
+//   } else {
+//     res.status(404);
+//     res.json("User not found");
+//   }
+// });
 
 app.post("/users",(req,res)=>{
 

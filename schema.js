@@ -3,18 +3,18 @@ const mongoose = require("mongoose");
 
 const users = new mongoose.Schema({
 
-    firstName: {type: String},
+    firstName: {type: String },
     lastName: {type: String},
     age:{type: Number},
     country: {type: String},
-    email: {type: String},
+    email: {type: String,required:true,unique:true},
     password: {type: String},
-})
+});
 
 
 const articles = new mongoose.Schema({
 
-    title: {type: String},
+    title: {type: String,required:true,unique:true},
     description: {type: String},
     author: {type:mongoose.Schema.ObjectId,ref:"users"},
 });
