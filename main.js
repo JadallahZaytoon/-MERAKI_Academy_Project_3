@@ -1,7 +1,9 @@
 const express = require("express");
 const app = express();
 const PORT = 5000;
-const { v4: uuidv4 } = require("uuid");
+// const { v4: uuidv4 } = require("uuid");
+const db =require("./project_3_v01");
+const {user1,articles1}= require("./schema");
 app.use(express.json());
 
 let articles = [
@@ -25,6 +27,8 @@ let articles = [
   },
 ];
 
+
+
 app.get("/articles", (req, res) => {
   res.status(200);
   res.json(articles);
@@ -46,17 +50,45 @@ app.get(`/articles/search_2`, (req, res) => {
   }
 });
 
-app.post("/articles", (req, res) => {
-  const newArticel = {
-    id: uuidv4(),
-    title: req.body.title,
-    description: req.body.description,
-    author: req.body.author,
-  };
-  articles.push(newArticel);
-  res.status(201);
-  res.json(newArticel);
+app.post("/users",(req,res)=>{
+
+  const {firstName, 
+  lastName, 
+  age,
+  country, 
+  email, 
+  password } =req.body;
+
+  const newUser = new user1({firstName, 
+    lastName, 
+    age,
+    country, 
+    email, 
+    password });
+
+    newUser
+    .save()
+    .then((result)=>{
+      res.json(result);
+    })
+    .catch((err)=>{
+      res.json(err);
+    })
+
+
 });
+
+// app.post("/articles", (req, res) => {
+//   const newArticel = {
+//     id: uuidv4(),
+//     title: req.body.title,
+//     description: req.body.description,
+//     author: req.body.author,
+//   };
+//   articles.push(newArticel);
+//   res.status(201);
+//   res.json(newArticel);
+// });
 
 app.put("/articles/:id", (req, res) => {
   const userId = req.params.id;
