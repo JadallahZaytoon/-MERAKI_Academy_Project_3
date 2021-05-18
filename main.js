@@ -3,7 +3,7 @@ const app = express();
 const PORT = 5000;
 // const { v4: uuidv4 } = require("uuid");
 const db = require("./project_3_v01");
-const { user1, articles1 } = require("./schema");
+const { user1, articles1,commenter1} = require("./schema");
 app.use(express.json());
 
 let articles = [
@@ -78,8 +78,45 @@ app.get("/article/authorid", (req, res) => {
       res.json(err);
     });
 });
+//As a user, I should be able to login as an author
+app.post("/login", (req, res) => {
+  const { email, password } = req.body;
+  user1
+    .find({ $and: [{ email: email }, { password: password }] })
+    .then((result) => {
+      if (result[0].email === email && result[0].password == password) {
+        res.status(200);
+        res.json("Valid login credentials");
+      }
+    })
+    .catch((err) => {
+      res.status(401);
+      res.json("Invalid login credentials");
+    });
+});
 
-//this function to input a new user.
+app.post("/articles/:id/comments",(req,res)=>{
+  const {comment,commenter} = req.body;
+  
+
+  const newComment = new commenter1({
+   comment,
+   commenter,
+  });
+
+  newComment
+    .save()
+    .then((result) => {
+      //i need update, to get the id of the comments to the arraycomment on articles
+      res.json(result);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+
+
+//this function to create a new user.
 app.post("/users", (req, res) => {
   const { firstName, lastName, age, country, email, password } = req.body;
 
