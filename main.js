@@ -26,7 +26,7 @@ let articles = [
     author: "Jouza",
   },
 ];
-//this function to get user 
+//this function to get user
 app.get("/users", (req, res) => {
   res.status(200);
 
@@ -82,7 +82,7 @@ app.get("/article/authorid", (req, res) => {
 //this function to input a new user.
 app.post("/users", (req, res) => {
   const { firstName, lastName, age, country, email, password } = req.body;
-  
+
   const newUser = new user1({
     firstName,
     lastName,
@@ -91,15 +91,15 @@ app.post("/users", (req, res) => {
     email,
     password,
   });
-  
+
   newUser
-  .save()
-  .then((result) => {
-    res.json(result);
-  })
-  .catch((err) => {
-    res.json(err);
-  });
+    .save()
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
 });
 
 //this function to input a new article.
@@ -119,57 +119,33 @@ app.post("/articles", (req, res) => {
 });
 //this function to update an article by its id.
 app.put("/article/update", (req, res) => {
-
   // let {title,description,author}=req.body
   const articleId = req.body;
   articles1
-  .findOneAndUpdate(
-    {_id: articleId}
-    ,req.body
-    ,{new:true})
-    .then((result)=>{
-        res.json(result)
+  .findOneAndUpdate({ _id: articleId }, req.body, { new: true })
+  .then((result) => {
+    res.json(result);
+  })
+  .catch((err) => {
+    res.send(err);
+  });
+});
+
+//this function to delete an article by its id.
+app.delete("/article/delete", (req, res) => {
+  // let {task, description, deadline,
+  //     isCompleted,priority} = req.body;
+
+  const articleId = req.body;
+
+  articles1
+    .findOneAndDelete({ _id: articleId }, req.body)
+    .then((result) => {
+      res.json(result);
     })
-    .catch((err)=>{res.send(err)});
-});
-
-
-
-app.delete("/articles/:id", (req, res) => {
-  const delById = req.params.id;
-
-  let i;
-  const found = articles.find((element, index) => {
-    i = index;
-    return element.id == delById;
-  });
-
-  if (found) {
-    articles.splice(i, 1);
-    res.json({
-      success: true,
-      message: `Success Delete article with id ${i}`,
+    .catch((err) => {
+      res.send(err);
     });
-  } else {
-    res.json("failed");
-  }
-});
-
-app.delete("/articles", (req, res) => {
-  const delByAuthor = req.query.author;
-
-  const found = articles.filter((element) => {
-    return element.author != delByAuthor;
-  });
-
-  if (found) {
-    articles = [...found];
-
-    res.json({
-      success: true,
-      message: `Success Delete articles for the author ${delByAuthor}`,
-    });
-  }
 });
 
 app.listen(PORT, () => {
