@@ -26,7 +26,7 @@ let articles = [
     author: "Jouza",
   },
 ];
-
+//this function to get user 
 app.get("/users", (req, res) => {
   res.status(200);
 
@@ -40,7 +40,7 @@ app.get("/users", (req, res) => {
       res.json(err);
     });
 });
-
+//this function to get all articles
 app.get("/articles", (req, res) => {
   res.status(200);
 
@@ -54,7 +54,7 @@ app.get("/articles", (req, res) => {
       res.json(err);
     });
 });
-
+//this function to get article by article id
 app.get("/article", (req, res) => {
   const articleId = req.query.id;
   articles1
@@ -66,7 +66,7 @@ app.get("/article", (req, res) => {
       res.json(err);
     });
 });
-
+//this function to get all articles by author id
 app.get("/article/authorid", (req, res) => {
   const authorId = req.query.author;
   articles1
@@ -79,28 +79,10 @@ app.get("/article/authorid", (req, res) => {
     });
 });
 
-// app.get(`/articles/id`, (req, res) => {
-
-//   const
-
-//   const articleId = req.query.id;
-
-//   const found = articles.find((element) => {
-//     return element.id == articleId;
-//   });
-
-//   if (found) {
-//     res.status(200);
-//     res.json(found);
-//   } else {
-//     res.status(404);
-//     res.json("User not found");
-//   }
-// });
-
+//this function to input a new user.
 app.post("/users", (req, res) => {
   const { firstName, lastName, age, country, email, password } = req.body;
-
+  
   const newUser = new user1({
     firstName,
     lastName,
@@ -109,17 +91,18 @@ app.post("/users", (req, res) => {
     email,
     password,
   });
-
+  
   newUser
-    .save()
-    .then((result) => {
-      res.json(result);
-    })
-    .catch((err) => {
-      res.json(err);
-    });
+  .save()
+  .then((result) => {
+    res.json(result);
+  })
+  .catch((err) => {
+    res.json(err);
+  });
 });
 
+//this function to input a new article.
 app.post("/articles", (req, res) => {
   const { title, description, author } = req.body;
 
@@ -134,24 +117,23 @@ app.post("/articles", (req, res) => {
       res.json(err);
     });
 });
+//this function to update an article by its id.
+app.put("/article/update", (req, res) => {
 
-app.put("/articles/:id", (req, res) => {
-  const userId = req.params.id;
-  let i;
-  const found = articles.find((element, index) => {
-    i = index;
-    return element.id == userId;
-  });
-
-  if (found) {
-    articles[i] = req.body.id;
-    res.status(200);
-    res.json(articles[i]);
-  } else {
-    res.status(404);
-    res.json("User not found");
-  }
+  // let {title,description,author}=req.body
+  const articleId = req.body;
+  articles1
+  .findOneAndUpdate(
+    {_id: articleId}
+    ,req.body
+    ,{new:true})
+    .then((result)=>{
+        res.json(result)
+    })
+    .catch((err)=>{res.send(err)});
 });
+
+
 
 app.delete("/articles/:id", (req, res) => {
   const delById = req.params.id;
