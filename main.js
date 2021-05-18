@@ -122,13 +122,13 @@ app.put("/article/update", (req, res) => {
   // let {title,description,author}=req.body
   const articleId = req.body;
   articles1
-  .findOneAndUpdate({ _id: articleId }, req.body, { new: true })
-  .then((result) => {
-    res.json(result);
-  })
-  .catch((err) => {
-    res.send(err);
-  });
+    .findOneAndUpdate({ _id: articleId }, req.body, { new: true })
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
 });
 
 //this function to delete an article by its id.
@@ -140,6 +140,21 @@ app.delete("/article/delete", (req, res) => {
 
   articles1
     .findOneAndDelete({ _id: articleId }, req.body)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
+app.delete("/article/delete", (req, res) => {
+  // let {task, description, deadline,
+  //     isCompleted,priority} = req.body;
+
+  const authorId = req.body;
+
+  articles1
+    .findOneAndDelete({ author: authorId }, req.body)
     .then((result) => {
       res.json(result);
     })
