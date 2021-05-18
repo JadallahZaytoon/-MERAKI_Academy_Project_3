@@ -3,7 +3,7 @@ const app = express();
 const PORT = 5000;
 // const { v4: uuidv4 } = require("uuid");
 const db = require("./project_3_v01");
-const { user1, articles1,commenter1} = require("./schema");
+const { user1, articles1, commenter1 } = require("./schema");
 app.use(express.json());
 
 let articles = [
@@ -95,26 +95,33 @@ app.post("/login", (req, res) => {
     });
 });
 
-app.post("/articles/:id/comments",(req,res)=>{
-  const {comment,commenter} = req.body;
-  
+app.post("/articles/:id/comments", (req, res) => {
+  const { comment, commenter } = req.body;
 
   const newComment = new commenter1({
-   comment,
-   commenter,
+    comment,
+    commenter,
   });
-
+  let id;
   newComment
     .save()
     .then((result) => {
-      //i need update, to get the id of the comments to the arraycomment on articles
+      id = result._id;
+      articles1
+        .findOneAndUpdate(
+          { _id: articleId },
+          { $push: { commnetid: result._id } }
+        )
+        .then(result)
+        .catch((err) => res.json(err));
       res.json(result);
     })
     .catch((err) => {
       res.json(err);
     });
-});
 
+  const articleId = req.params.id;
+});
 
 //this function to create a new user.
 app.post("/users", (req, res) => {
