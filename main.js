@@ -132,7 +132,7 @@ app.put("/article/update", (req, res) => {
 });
 
 //this function to delete an article by its id.
-app.delete("/article/delete", (req, res) => {
+app.delete("/article/deleteId", (req, res) => {
   // let {task, description, deadline,
   //     isCompleted,priority} = req.body;
 
@@ -147,10 +147,9 @@ app.delete("/article/delete", (req, res) => {
       res.send(err);
     });
 });
-app.delete("/article/delete", (req, res) => {
-  // let {task, description, deadline,
-  //     isCompleted,priority} = req.body;
 
+//this function to delete an article by author id.
+app.delete("/article/delete", (req, res) => {
   const authorId = req.body;
 
   articles1
