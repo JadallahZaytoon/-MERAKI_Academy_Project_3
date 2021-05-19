@@ -8,6 +8,7 @@ const users = new mongoose.Schema({
   country: { type: String },
   email: { type: String, required: true, unique: true },
   password: { type: String },
+  role: {type: mongoose.Schema.ObjectId, ref: "roles"}
 });
 
 users.pre("save", async function () {
