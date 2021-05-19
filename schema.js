@@ -33,7 +33,7 @@ const commentsOnArticles = new mongoose.Schema({
 
 const roles = new mongoose.Schema({
   role: { type: String },
-  permissions: { type: String },
+  permissions: [{ type: String }],
 });
 
 const user1 = mongoose.model("User", users);
