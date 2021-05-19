@@ -87,28 +87,25 @@ app.post("/login", (req, res) => {
   user1
     .find({ email: email })
     .then((result) => {
-      console.log(result[0].email);
-     
-        bcrypt.compare(password, result[0].password, (err, result1) => {
-          if (result1) {
-            const payload = {
-              userId: result[0]._id,
-              country: result[0].country,
-            };
+      bcrypt.compare(password, result[0].password, (err, result1) => {
+        if (result1) {
+          const payload = {
+            role: "Admin",
+            country: result[0].country,
+          };
 
-            const options = {
-              expiresIn: "60m",
-            };
+          const options = {
+            expiresIn: "60m",
+          };
 
-            const token = jwt.sign(payload, secret, options);
-            res.status(200);
-            res.json(token);
-          } else {
-            res.status(403);
-            res.json("The password you’ve entered is incorrect");
-          }
-        });
-     
+          const token = jwt.sign(payload, secret, options);
+          res.status(200);
+          res.json(token);
+        } else {
+          res.status(403);
+          res.json("The password you’ve entered is incorrect");
+        }
+      });
     })
     .catch((err) => {
       res.status(404);
@@ -116,9 +113,23 @@ app.post("/login", (req, res) => {
     });
 });
 
-app.post("/articles/:id/comments", (req, res) => {
-  const { comment, commenter } = req.body;
+const auth = (req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1];
+  jwt.verify(token, secret, (err, result) => {
+    if (err) {
+      return res.json(err);
+    }
+    if (result.role === "Admin") {
+      next();
+    } else {
+      res.json("not admin");
+    }
+  });
+};
 
+app.post("/articles/:id/comments", auth, (req, res) => {
+  const { comment, commenter } = req.body;
+  const articleId = req.params.id;
   const newComment = new commenter1({
     comment,
     commenter,
@@ -140,8 +151,6 @@ app.post("/articles/:id/comments", (req, res) => {
     .catch((err) => {
       res.json(err);
     });
-
-  const articleId = req.params.id;
 });
 
 //this function to create a new user.
