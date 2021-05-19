@@ -120,10 +120,11 @@ const auth = (req, res, next) => {
     if (err) {
       return res.json(err);
     }
-    if (result.role[0].role === "admin") {
+    if (result) {
+      req.token = result
       next();
     } else {
-      res.json("not admin");
+      res.json("Invalid");
     }
   });
 };
