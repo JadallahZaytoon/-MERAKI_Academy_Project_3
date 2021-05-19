@@ -14,6 +14,9 @@ users.pre("save", async function () {
   const salt = 10;
   this.email = this.email.toLowerCase();
   this.password = await bcrypt.hash(this.password, salt);
+  this.firstName=this.firstName.toLowerCase();
+  this.lastName=this.lastName.toLowerCase();
+  this.country=this.country.toLowerCase();
 });
 
 const articles = new mongoose.Schema({

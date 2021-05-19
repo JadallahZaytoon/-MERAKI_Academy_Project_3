@@ -7,6 +7,7 @@ require("dotenv").config();
 const db = require("./project_3_v01");
 const { user1, articles1, commenter1 } = require("./schema");
 app.use(express.json());
+const secret = process.env.SECRET;
 
 let articles = [
   {
@@ -84,16 +85,34 @@ app.get("/article/authorid", (req, res) => {
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
   user1
-    .find({ $and: [{ email: email }, { password: password }] })
+    .find({ email: email })
     .then((result) => {
-      if (result[0].email === email && result[0].password == password) {
-        res.status(200);
-        res.json("Valid login credentials");
-      }
+      console.log(result[0].email);
+     
+        bcrypt.compare(password, result[0].password, (err, result1) => {
+          if (result1) {
+            const payload = {
+              userId: result[0]._id,
+              country: result[0].country,
+            };
+
+            const options = {
+              expiresIn: "60m",
+            };
+
+            const token = jwt.sign(payload, secret, options);
+            res.status(200);
+            res.json(token);
+          } else {
+            res.status(403);
+            res.json("The password you’ve entered is incorrect");
+          }
+        });
+     
     })
     .catch((err) => {
-      res.status(401);
-      res.json("Invalid login credentials");
+      res.status(404);
+      res.json("The email doesn't exist");
     });
 });
 
@@ -179,9 +198,6 @@ app.put("/article/update", (req, res) => {
 
 //this function to delete an article by its id.
 app.delete("/article/deleteId", (req, res) => {
-  // let {task, description, deadline,
-  //     isCompleted,priority} = req.body;
-
   const articleId = req.body;
 
   articles1
