@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const PORT = 5000;
-// const { v4: uuidv4 } = require("uuid");
+require("dotenv").config();
 const db = require("./project_3_v01");
 const { user1, articles1, commenter1 } = require("./schema");
 app.use(express.json());

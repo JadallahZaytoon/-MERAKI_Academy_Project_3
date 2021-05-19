@@ -21,8 +21,15 @@ const commentsOnArticles = new mongoose.Schema({
   commenter: { type: mongoose.Schema.ObjectId, ref: "User" },
 });
 
+const roles = new mongoose.Schema({
+  role:{type:String},
+  permissions:{type:String},
+});
+
 const user1 = mongoose.model("User", users);
 const articles1 = mongoose.model("article", articles);
 const commenter1 = mongoose.model("comments", commentsOnArticles);
+
+
 
 module.exports = { user1, articles1, commenter1 };
