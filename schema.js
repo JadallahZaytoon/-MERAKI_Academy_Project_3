@@ -8,7 +8,7 @@ const users = new mongoose.Schema({
   country: { type: String },
   email: { type: String, required: true, unique: true },
   password: { type: String },
-  role: {type: mongoose.Schema.ObjectId, ref: "roles"}
+  role: {type: mongoose.Schema.ObjectId, ref: "Roles"}
 });
 
 users.pre("save", async function () {
@@ -42,4 +42,4 @@ const articles1 = mongoose.model("article", articles);
 const commenter1 = mongoose.model("comments", commentsOnArticles);
 const role1 = mongoose.model("Roles", roles);
 
-module.exports = { user1, articles1, commenter1 };
+module.exports = { user1, articles1, commenter1,role1 };

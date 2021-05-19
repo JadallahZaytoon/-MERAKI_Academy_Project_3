@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const PORT = 5000;
 require("dotenv").config();
 const db = require("./project_3_v01");
-const { user1, articles1, commenter1 } = require("./schema");
+const { user1, articles1, commenter1,role1 } = require("./schema");
 app.use(express.json());
 const secret = process.env.SECRET;
 
@@ -90,8 +90,9 @@ app.post("/login", (req, res) => {
       bcrypt.compare(password, result[0].password, (err, result1) => {
         if (result1) {
           const payload = {
-            role: "Admin",
+            userId: result[0]._id,
             country: result[0].country,
+            role:role,
           };
 
           const options = {
@@ -119,7 +120,7 @@ const auth = (req, res, next) => {
     if (err) {
       return res.json(err);
     }
-    if (result.role === "Admin") {
+    if (result.role[0].role === "admin") {
       next();
     } else {
       res.json("not admin");
@@ -155,7 +156,7 @@ app.post("/articles/:id/comments", auth, (req, res) => {
 
 //this function to create a new user.
 app.post("/users", (req, res) => {
-  const { firstName, lastName, age, country, email, password } = req.body;
+  const { firstName, lastName, age, country, email, password  } = req.body;
 
   const newUser = new user1({
     firstName,
@@ -167,6 +168,23 @@ app.post("/users", (req, res) => {
   });
 
   newUser
+    .save()
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+
+app.post("/roles", (req, res) => {
+  const { role,premissions  } = req.body;
+
+  const newRole = new role1({
+    role,premissions,
+  });
+
+  newRole
     .save()
     .then((result) => {
       res.json(result);
