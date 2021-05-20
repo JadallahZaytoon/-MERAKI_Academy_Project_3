@@ -8,16 +8,16 @@ const users = new mongoose.Schema({
   country: { type: String },
   email: { type: String, required: true, unique: true },
   password: { type: String },
-  role: {type: mongoose.Schema.ObjectId, ref: "Roles"}
+  role: { type: mongoose.Schema.ObjectId, ref: "Roles" },
 });
 
 users.pre("save", async function () {
   const salt = 10;
   this.email = this.email.toLowerCase();
   this.password = await bcrypt.hash(this.password, salt);
-  this.firstName=this.firstName.toLowerCase();
-  this.lastName=this.lastName.toLowerCase();
-  this.country=this.country.toLowerCase();
+  this.firstName = this.firstName.toLowerCase();
+  this.lastName = this.lastName.toLowerCase();
+  this.country = this.country.toLowerCase();
 });
 
 const articles = new mongoose.Schema({
@@ -42,4 +42,4 @@ const articles1 = mongoose.model("article", articles);
 const commenter1 = mongoose.model("comments", commentsOnArticles);
 const role1 = mongoose.model("Roles", roles);
 
-module.exports = { user1, articles1, commenter1,role1 };
+module.exports = { user1, articles1, commenter1, role1 };

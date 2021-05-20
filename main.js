@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const PORT = 5000;
 require("dotenv").config();
 const db = require("./project_3_v01");
-const { user1, articles1, commenter1,role1 } = require("./schema");
+const { user1, articles1, commenter1, role1 } = require("./schema");
 app.use(express.json());
 const secret = process.env.SECRET;
 
@@ -84,24 +84,21 @@ app.get("/article/authorid", (req, res) => {
 //As a user, I should be able to login as an author
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
- let newrole;
+  let newrole;
   user1
     .find({ email: email })
     .then((result) => {
-
-     
-       role1.findById(result[0].role)
-      .then((result2)=>{
-        req.permissions = result2.permissions
-        newrole=req.permissions;
+      role1.findById(result[0].role).then((result2) => {
+        req.permissions = result2.permissions;
+        newrole = req.permissions;
       });
 
-       bcrypt.compare(password, result[0].password, (err, result1) => {
+      bcrypt.compare(password, result[0].password, (err, result1) => {
         if (result1) {
           const payload = {
             userId: result[0]._id,
             country: result[0].country,
-            role:newrole,
+            role: newrole,
           };
 
           const options = {
@@ -110,7 +107,6 @@ app.post("/login", (req, res) => {
 
           const token = jwt.sign(payload, secret, options);
 
-         
           res.status(200);
           res.json(token);
         } else {
@@ -132,8 +128,7 @@ const auth = (req, res, next) => {
       return res.json(err);
     }
     if (result) {
-      
-      req.token = result
+      req.token = result;
       next();
     } else {
       res.json("Invalid");
@@ -141,56 +136,55 @@ const auth = (req, res, next) => {
   });
 };
 
-const authorization =((string)=>{
-
-return  (req,res,next)=>{
-
-  const permissionArray=req.token.role;
-  const found = permissionArray.find((element)=>{
-
-    return element === string;
-  });
-
-  if(found){
-
-    next();
-  }
-  else{
-    res.status(403);
-    res.json("forbidden");
-  }
-};
-  
-})
-app.post("/articles/:id/comments", auth,authorization("CREATE_COMMENTS"),(req, res) => {
-  const { comment, commenter } = req.body;
-  const articleId = req.params.id;
-  const newComment = new commenter1({
-    comment,
-    commenter,
-  });
-  let id;
-  newComment
-    .save()
-    .then((result) => {
-      id = result._id;
-      articles1
-        .findOneAndUpdate(
-          { _id: articleId },
-          { $push: { commnetid: result._id } }
-        )
-        .then(result)
-        .catch((err) => res.json(err));
-      res.json(result);
-    })
-    .catch((err) => {
-      res.json(err);
+const authorization = (string) => {
+  return (req, res, next) => {
+    const permissionArray = req.token.role;
+    const found = permissionArray.find((element) => {
+      return element === string;
     });
-});
+
+    if (found) {
+      next();
+    } else {
+      res.status(403);
+      res.json("forbidden");
+    }
+  };
+};
+app.post(
+  "/articles/:id/comments",
+  auth,
+  authorization("CREATE_COMMENTS"),
+  (req, res) => {
+    const { comment, commenter } = req.body;
+    const articleId = req.params.id;
+    const newComment = new commenter1({
+      comment,
+      commenter,
+    });
+    let id;
+    newComment
+      .save()
+      .then((result) => {
+        id = result._id;
+        articles1
+          .findOneAndUpdate(
+            { _id: articleId },
+            { $push: { commnetid: result._id } }
+          )
+          .then(result)
+          .catch((err) => res.json(err));
+        res.json(result);
+      })
+      .catch((err) => {
+        res.json(err);
+      });
+  }
+);
 
 //this function to create a new user.
 app.post("/users", (req, res) => {
-  const { firstName, lastName, age, country, email, password ,role } = req.body;
+  const { firstName, lastName, age, country, email, password, role } = req.body;
 
   const newUser = new user1({
     firstName,
@@ -213,9 +207,10 @@ app.post("/users", (req, res) => {
 });
 
 app.post("/roles", (req, res) => {
-  const { role,permissions  } = req.body;
+  const { role, permissions } = req.body;
   const newRole = new role1({
-    role,permissions,
+    role,
+    permissions,
   });
 
   newRole
@@ -243,7 +238,6 @@ app.post("/articles", (req, res) => {
       res.json(err);
     });
 });
-
 
 //this function to update an article by its id.
 app.put("/article/update", (req, res) => {
