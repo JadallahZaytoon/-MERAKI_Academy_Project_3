@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const options = {
   useCreateIndex: true,
-  useFindAndModify: false,
+  useFindAndModify: true,
   useNewUrlParser: true,
   useUnifiedTopology: true,
 };
