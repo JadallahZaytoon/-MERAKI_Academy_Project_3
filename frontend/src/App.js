@@ -1,6 +1,7 @@
 import { React, useEffect, useLayoutEffect, useState } from "react";
 import Register from "./components/Register";
 import Navigation from "./components/Navigation";
+import Login from "./components/Login"
 import "./App.css";
 import {
   BrowserRouter as Router,
@@ -16,19 +17,13 @@ const App = () => {
         <Navigation />
         <Switch>
           <Route exact path="/register" component={Register} />
-          <Route exact path="/login" component={login} />
+          <Route exact path="/login" component={Login} />
         </Switch>
       </div>
     </>
   );
 };
 
-const login = () => {
-  return (
-    <div>
-      <h1>Jadallah</h1>
-    </div>
-  );
-};
+
 
 export default App;
