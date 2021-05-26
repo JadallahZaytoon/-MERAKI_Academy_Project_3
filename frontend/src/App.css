@@ -21,3 +21,12 @@
     
 
 }
+
+.success{
+    background-color: rgb(121, 241, 141);
+}
+
+.error{
+    background-color: rgb(245, 48, 48);
+
+}
