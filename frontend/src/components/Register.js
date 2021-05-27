@@ -48,12 +48,6 @@ export default function Register() {
         if (!result.data.errors) {
           setx(true);
           sety(false);
-          setFirstName("");
-          setLastName("");
-          setage("");
-          setcountry("");
-          setemail("");
-          setpassword("");
         } else {
           sety(true);
           setx(false);
@@ -109,7 +103,7 @@ export default function Register() {
           setpassword(e.target.value);
         }}
       ></input>
-      <button onClick={addUser}>Register</button>
+      <button className="registerBtn" onClick={addUser}>Register</button>
 
       {x ? (
         <div className="success">The user has been created successfully</div>
