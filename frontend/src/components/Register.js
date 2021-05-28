@@ -103,7 +103,9 @@ export default function Register() {
           setpassword(e.target.value);
         }}
       ></input>
-      <button className="registerBtn" onClick={addUser}>Register</button>
+      <button className="registerBtn" onClick={addUser}>
+        Register
+      </button>
 
       {x ? (
         <div className="success">The user has been created successfully</div>

@@ -1,49 +1,44 @@
 .App {
-
-    border: 5px solid #008000;
-    margin: 7px;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
+  border: 5px solid #008000;
+  margin: 7px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
-    display: flex;
-    border: 3px solid red;
-    margin: 7px;
-    gap: 20px;
-    width: 400px;
-    justify-content: space-evenly;
+  display: flex;
+  border: 3px solid red;
+  margin: 7px;
+  gap: 20px;
+  width: 400px;
+  justify-content: space-evenly;
 }
 
 .body {
-
-    border: 3px solid blue;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 400px;
-    margin: 7px;
-    gap: 10px;
-    
-
+  border: 3px solid blue;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 400px;
+  margin: 7px;
+  gap: 10px;
 }
 
-.success{
-    background-color: rgb(121, 241, 141);
+.success {
+  background-color: rgb(121, 241, 141);
 }
 
-.error{
-    background-color: rgb(245, 48, 48);
+.error {
+  background-color: rgb(245, 48, 48);
+}
+.loginBtn {
+  background-color: rgb(92, 92, 245);
+}
+.registerBtn {
+  background-color: rgb(71, 248, 160);
+}
 
-}
-.loginBtn{
-    background-color: rgb(92, 92, 245);
-}
-.registerBtn{
-    background-color: rgb(71, 248, 160);
-}
-
-.articlesBody{
-    height: 100px;
+.articlesBody {
+  height: 100px;
 }
