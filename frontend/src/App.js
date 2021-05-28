@@ -3,6 +3,7 @@ import Register from "./components/Register";
 import Navigation from "./components/Navigation";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
+import NewArticle from "./components/NewArticle";
 import "./App.css";
 import {
   BrowserRouter as Router,
@@ -30,6 +31,10 @@ const App = () => {
             render={() => <Login setpassed={setpassed} />}
           />
           <Route exact path="/Dashboard" component={Dashboard} />
+          <Route
+           exact
+           path="/NewArticle"
+           render={()=> <NewArticle passedToken={passedToken} />}/>
         </Switch>
       </div>
     </>

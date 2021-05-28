@@ -42,3 +42,16 @@
 .articlesBody {
   height: 100px;
 }
+.createArticlesBody{
+    height: 100px; 
+    display: flex;
+    flex-direction: column;
+}
+
+.discription{
+    height: 110px; width: 233px
+}
+
+#NewArticle{
+    background-color: rgb(0, 183, 255);
+}
